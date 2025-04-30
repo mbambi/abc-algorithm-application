@@ -21,7 +21,7 @@ The **Artificial Bee Colony (ABC)** algorithm simulates the foraging behavior of
 ## 🧑‍💻 Installation & Usage
 Clone the repository and install dependencies:
 ```bash
-git clone https://github.com/your-username/abc-algorithm-application.git  
+git clone https://github.com/mbambi/abc-algorithm-application.git  
 cd abc-algorithm-application  
 pip install -r requirements.txt
 ```
