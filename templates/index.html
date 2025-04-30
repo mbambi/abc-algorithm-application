@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Optimisation de la Chaîne d'Approvisionnement - Algorithme ABC</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Optimisation de la Chaîne d'Approvisionnement</h1>
+      <p>Utilisation de l'Algorithme ABC pour trouver le meilleur itinéraire au Maroc.</p>
+    </header>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Controls -->
+    <section class="controls">
+      <div class="select-group">
+        <label for="start">Point de départ :</label>
+        <select id="start">
+          <option value="" disabled selected>Sélectionnez un point de départ</option>
+          {% for key in locations.keys() %}
+          <option value="{{ key }}">{{ key }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="select-group">
+        <label for="end">Point d'arrivée :</label>
+        <select id="end">
+          <option value="" disabled selected>Sélectionnez un point d'arrivée</option>
+          {% for key in locations.keys() %}
+          <option value="{{ key }}">{{ key }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button id="optimizeBtn" disabled>Optimiser</button>
+    </section>
+
+    <!-- Spinner and Results -->
+    <div id="spinner" class="spinner hidden"></div>
+    <div class="result" id="result"></div>
+    <div id="abcLogs" class="abc-logs"></div>
+  </div>
+
+  <!-- Inject locations variable for JS -->
+  <script>
+    var locations = {{ locations|tojson }};
+  </script>
+  <!-- Leaflet JS -->
+  <script src="{{ url_for('static', filename='leaflet/leaflet.js') }}"></script>
+  <!-- Map and Control JS -->
+  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+  <!-- Inline script to enable button when selections are valid -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var optimizeBtn = document.getElementById('optimizeBtn');
+      var startSelect = document.getElementById('start');
+      var endSelect = document.getElementById('end');
+      
+      function checkInputs() {
+        // Enable button only if both selections are non-empty and different
+        if(startSelect.value && endSelect.value && (startSelect.value !== endSelect.value)) {
+          optimizeBtn.disabled = false;
+        } else {
+          optimizeBtn.disabled = true;
+        }
+      }
+      
+      startSelect.addEventListener('change', checkInputs);
+      endSelect.addEventListener('change', checkInputs);
+      
+      // Run check at startup in case default values are set
+      checkInputs();
+    });
+  </script>
+</body>
+</html>
